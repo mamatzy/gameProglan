@@ -1,34 +1,60 @@
 #include <graphics.h>
+#include <conio.h>
 
-int main()
-{
-	int gd = DETECT, gm;
+class tLingkaran {
+public:
+    int x, y, r;
+    int dx;
 
-	initgraph(&gd, &gm, "");
+    tLingkaran(int xi, int yi, int ri, int speed) { 
+        x = xi;
+        y = yi;
+        r = ri;
+        dx = speed;
+    }
 
-	// Persegi
-	//hor 1
-	line(150, 150, 450, 150);
-	//hor 2
-	line(150, 200, 450, 200);
-	//ver 1
-	line(450, 150, 450, 200);
-	//ver 2
-	line(150, 150, 150, 200);
+    void gambar() {
+        circle(x, y, r);
+    }
+    
+    void gerak() {
+        x += dx;
+        if (x + r >= getmaxx() || x - r <= 0) {
+            dx = -dx; 
+        }
+    }
+};
 
-    // sayap belakang kiri
-	line(150, 150, 150, 100);
-	line(150, 100, 200, 150);
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
 
-	// sayap depan kanan
-	line(350, 150, 350, 50);
-	line(350, 50, 400, 150);
+    const int jumlahLingkaran = 10;
+    tLingkaran a[jumlahLingkaran] = {
+        {20, 100, 20, 1},
+        {40, 150, 20, 2},
+        {80, 200, 20, 3},
+        {100, 250, 20, 2},
+        {120, 300, 20, 1},
+        {140, 350, 20, 2},
+        {160, 400, 20, 3},
+        {180, 450, 20, 2},
+        {200, 500, 20, 1},
+        {220, 550, 20, 2}
+    };
 
-	// sayap belakang kanan
-	line(150, 150, 150, 100);
-	line(150, 100, 200, 150);
+    while (!kbhit()) { // Loop sampai tombol ditekan
+        cleardevice();
 
-	getch();
+        for (int i = 0; i < jumlahLingkaran; i++) {
+            a[i].gambar();
+            a[i].gerak();
+        }
 
-	closegraph();
+        delay(10);
+    }
+    
+    getch();
+    closegraph();
+    return 0;
 }
